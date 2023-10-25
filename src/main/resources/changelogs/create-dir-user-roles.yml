@@ -4,7 +4,7 @@ databaseChangeLog:
        author:  Stas
        changes:
          -  sql:
-              sql: create table user_roles(user_role varchar(255) primary key check (weather_type in ('user', 'admin')));
+              sql: create table user_roles(user_role varchar(255) primary key check (user_role in ('user', 'admin')));
          -  insert:
              tableName: user_roles
              columns:
