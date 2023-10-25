@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 public class User implements UserDetails {
     @Id
@@ -21,8 +21,6 @@ public class User implements UserDetails {
     private Long id;
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "phone_number", unique = true)
-    private String phoneNumber;
     @Column(name = "name")
     private String name;
     @Column(name = "active")

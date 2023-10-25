@@ -1,0 +1,19 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  create-dir-user-roles:v1
+       author:  Stas
+       changes:
+         -  sql:
+              sql: create table user_roles(user_role varchar(255) primary key check (weather_type in ('user', 'admin')));
+         -  insert:
+             tableName: user_roles
+             columns:
+               - column:
+                   name: user_role
+                   value: "user"
+         - insert:
+             tableName: user_roles
+             columns:
+               - column:
+                   name: user_role
+                   value: "admin"
