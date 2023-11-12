@@ -1,5 +1,6 @@
 package ru.shchetinin.groupmanager.configs;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,6 +42,13 @@ public class SecurityConfiguration {
                                         new AntPathRequestMatcher("/registration"))
                                 .permitAll()
                                 .requestMatchers(
+                                        PathRequest.toStaticResources().atCommonLocations()
+                                )
+                                .permitAll()
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/login"))
+                                .permitAll()
+                                .requestMatchers(
                                         new AntPathRequestMatcher("/h2-console/**"))
                                 .hasRole(RoleCheck.ADMIN.name())
                                 .requestMatchers(
@@ -53,7 +61,8 @@ public class SecurityConfiguration {
                                 .hasAnyRole(RoleCheck.USER.name(), RoleCheck.ADMIN.name())
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
-                .formLogin(withDefaults())
+                //.formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(formLogin -> formLogin.loginPage("/login"))
                 //TODO: Разобраться и сконфигурировать
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
