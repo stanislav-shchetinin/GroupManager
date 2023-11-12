@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/registration"))
+                                        new AntPathRequestMatcher("/registration", HttpMethod.POST.name()))
                                 .permitAll()
                                 .requestMatchers(
                                         PathRequest.toStaticResources().atCommonLocations()
@@ -62,7 +62,7 @@ public class SecurityConfiguration {
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
                 //.formLogin(AbstractHttpConfigurer::disable)
-                .formLogin(formLogin -> formLogin.loginPage("/login"))
+                .formLogin(formLogin -> formLogin.loginPage("/login").defaultSuccessUrl("/home", true))
                 //TODO: Разобраться и сконфигурировать
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
