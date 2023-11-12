@@ -3,11 +3,15 @@ const reg = () => {
     const form = document.querySelector('.sign-up-container');
     const inputUsername = form.querySelector('.username')
     const inputPassword = form.querySelector('.password')
+    const csrfToken = document.querySelector('meta[name=_csrf_token]').content;
+
     const json = {"username": inputUsername.value, "password": inputPassword.value}
+
      fetch('/registration', {
          method: 'POST',
          headers: {
-             'Content-Type': 'application/json;charset=utf-8'
+             'Content-Type': 'application/json;charset=utf-8',
+             'X-CSRF-TOKEN': csrfToken
          },
          body: JSON.stringify(json)
      }).then(r => {

@@ -39,14 +39,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/registration", HttpMethod.POST.name()))
-                                .permitAll()
-                                .requestMatchers(
                                         PathRequest.toStaticResources().atCommonLocations()
                                 )
                                 .permitAll()
                                 .requestMatchers(
+                                        new AntPathRequestMatcher("/registration", HttpMethod.POST.name()))
+                                .permitAll()
+                                .requestMatchers(
                                         new AntPathRequestMatcher("/login"))
+                                .permitAll()
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/logout"))
                                 .permitAll()
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/h2-console/**"))
@@ -61,11 +64,11 @@ public class SecurityConfiguration {
                                 .hasAnyRole(RoleCheck.USER.name(), RoleCheck.ADMIN.name())
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
-                //.formLogin(AbstractHttpConfigurer::disable)
                 .formLogin(formLogin -> formLogin.loginPage("/login").defaultSuccessUrl("/home", true))
-                //TODO: Разобраться и сконфигурировать
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> {
+                    csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+                })
+                .cors(withDefaults())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
