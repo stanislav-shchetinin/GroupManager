@@ -1,5 +1,7 @@
 databaseChangeLog:
   - include:
-      file: classpath:changelogs/create-user.yml
+      file: classpath:changelogs/create-users.yml
   - include:
-      file: classpath:changelogs/create-dir-user-roles.yml
+      file: classpath:changelogs/create-authorities.yml
+  - include:
+      file: classpath:changelogs/create-admin.yml
