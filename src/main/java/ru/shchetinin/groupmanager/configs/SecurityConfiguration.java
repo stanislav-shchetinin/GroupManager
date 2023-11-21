@@ -49,6 +49,9 @@ public class SecurityConfiguration {
                                         new AntPathRequestMatcher("/login"))
                                 .permitAll()
                                 .requestMatchers(
+                                        new AntPathRequestMatcher("/activation/*"))
+                                .permitAll()
+                                .requestMatchers(
                                         new AntPathRequestMatcher("/logout"))
                                 .permitAll()
                                 .requestMatchers(

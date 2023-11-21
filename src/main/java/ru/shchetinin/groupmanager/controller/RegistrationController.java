@@ -7,15 +7,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.responses.Response;
 import ru.shchetinin.groupmanager.services.RegistrationService;
 
 @RestController
-@RequestMapping("/registration")
 @RequiredArgsConstructor
 @Tag(name="RegistrationController",
-        description="Контроллер для регистрации новых пользователей")
+        description="Контроллер для регистрации пользователей")
 @Slf4j
 public class RegistrationController {
 
@@ -34,8 +34,14 @@ public class RegistrationController {
                     description = "Пользователь с таким username уже существует"
             )
     })
-    @PostMapping
+    @PostMapping("/registration")
     public Response registration(@RequestBody User user){
         return registrationService.addNewUser(user);
     }
+
+    @GetMapping("/activation/{activationCode}")
+    public RedirectView activation(@PathVariable String activationCode){
+        return registrationService.activation(activationCode);
+    }
+
 }

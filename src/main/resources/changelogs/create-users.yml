@@ -17,5 +17,13 @@ databaseChangeLog:
                      constraints:
                        nullable:  false
                 - column:
+                    name: email
+                    type: varchar(512)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: activation_code
+                    type: varchar(512)
+                - column:
                     name: enabled
                     type: boolean

@@ -1,0 +1,14 @@
+#Database
+H2_USERNAME: ADMIN
+H2_PASSWORD: 12345
+
+#Server
+SERVER_PORT: 8080
+ACTIVE_PROFILE: dev
+
+#Email config
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: frontend.shchetinin@gmail.com
+EMAIL_PASSWORD: ykaxvjihaqcdxpxc
+VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}

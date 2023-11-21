@@ -1,5 +1,6 @@
 package ru.shchetinin.groupmanager.exceptions.handlers;
 
+import ru.shchetinin.groupmanager.exceptions.ActivationCodeNotFoundException;
 import ru.shchetinin.groupmanager.exceptions.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,15 @@ import ru.shchetinin.groupmanager.responses.Response;
 @ControllerAdvice
 public class RegistrationExceptionsHandler {
     @ExceptionHandler({UserAlreadyExistsException.class})
-    public ResponseEntity<Response> handleException(Exception e) {
+    public ResponseEntity<Response> handleUserAlreadyExistsException(Exception e) {
         return new ResponseEntity<>(
                 new Response(HttpStatus.CONFLICT.value(), "User with this username already exists"),
                 HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler({ActivationCodeNotFoundException.class})
+    public ResponseEntity<Response> handleActivationCodeNotFoundException(Exception e) {
+        return new ResponseEntity<>(
+                new Response(HttpStatus.NOT_FOUND.value(), "Activation code is not found"),
+                HttpStatus.NOT_FOUND);
     }
 }

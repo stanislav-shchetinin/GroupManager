@@ -7,5 +7,6 @@ import ru.shchetinin.groupmanager.entities.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
     User findByUsername(String username);
+    User findByActivationCode(String activationCode);
 
 }

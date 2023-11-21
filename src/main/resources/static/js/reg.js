@@ -3,9 +3,11 @@ const reg = () => {
     const form = document.querySelector('.sign-up-container');
     const inputUsername = form.querySelector('.username')
     const inputPassword = form.querySelector('.password')
+    const inputEmail = form.querySelector('.email')
     const csrfToken = document.querySelector('meta[name=_csrf_token]').content;
 
-    const json = {"username": inputUsername.value, "password": inputPassword.value}
+    const json = {"username": inputUsername.value, "password": inputPassword.value,
+    "email": inputEmail.value}
 
      fetch('/registration', {
          method: 'POST',

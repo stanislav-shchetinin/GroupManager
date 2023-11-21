@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
+@ToString
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +17,7 @@ public class User {
     @Id
     private String username;
     private String password;
+    private String email;
+    private String activationCode;
     private boolean enabled;
 }

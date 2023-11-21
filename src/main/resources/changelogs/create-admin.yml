@@ -13,6 +13,9 @@ databaseChangeLog:
                    name: password
                    value: $2a$11$FhD8xRtSzZqBl66D68kXuuyLcAh8ZhWDGNdy./BuKPDeWFJ3E52u2
                - column:
+                   name: email
+                   value: stas.shc@gmail.com
+               - column:
                    name: enabled
                    value: true
          - insert:
