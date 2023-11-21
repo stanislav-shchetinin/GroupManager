@@ -1,3 +1,6 @@
+const validInput = (str) => {
+    return str != null && str !== "";
+}
 const reg = () => {
     const container = document.getElementById('container');
     const form = document.querySelector('.sign-up-container');
@@ -8,6 +11,13 @@ const reg = () => {
 
     const json = {"username": inputUsername.value, "password": inputPassword.value,
     "email": inputEmail.value}
+
+    for (const [key, val] of Object.entries(json)) {
+        if (!validInput(val)){
+            alert(`Поле ${key} не может быть пустым`);
+            return;
+        }
+    }
 
      fetch('/registration', {
          method: 'POST',

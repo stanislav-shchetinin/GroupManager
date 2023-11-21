@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,7 @@ public class RegistrationService {
     private final UserRepository userRepo;
     private final AuthorityRepository authorityRepo;
     private final PasswordEncoder encoder;
-    private final MailSender mainSender;
+    private final EmailSender emailSender;
 
     public Response addNewUser(User user) throws UserAlreadyExistsException {
         String login = user.getUsername();
@@ -56,7 +57,7 @@ public class RegistrationService {
             String message = String.format(
                     "Hello, %s!\n Welcome to GroupManager. Please, visit next link:%s", user.getUsername(), link
             );
-            mainSender.send(email, "Activation Code", message);
+            emailSender.send(email, "Activation Code", message);
         }
     }
 
