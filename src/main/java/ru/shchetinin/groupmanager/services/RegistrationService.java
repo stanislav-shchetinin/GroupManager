@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@EnableAsync
 @Slf4j
 public class RegistrationService {
 
@@ -50,7 +52,8 @@ public class RegistrationService {
         }
     }
 
-    private void sendEmail(User user){
+    @Async
+    public void sendEmail(User user){
         String email = user.getUsername();
         if (StringUtils.hasText(email)){
             String link = String.format("http://localhost:8080/activation/%s", user.getActivationCode());
