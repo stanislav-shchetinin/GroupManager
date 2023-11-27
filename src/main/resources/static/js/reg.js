@@ -4,13 +4,11 @@ const validInput = (str) => {
 const reg = () => {
     const container = document.getElementById('container');
     const form = document.querySelector('.sign-up-container');
-    const inputUsername = form.querySelector('.username')
     const inputPassword = form.querySelector('.password')
     const inputEmail = form.querySelector('.email')
     const csrfToken = document.querySelector('meta[name=_csrf_token]').content;
 
-    const json = {"username": inputUsername.value, "password": inputPassword.value,
-    "email": inputEmail.value}
+    const json = {"username": inputEmail.value, "password": inputPassword.value}
 
     for (const [key, val] of Object.entries(json)) {
         if (!validInput(val)){

@@ -18,8 +18,7 @@
             <div class="form-container sign-up-container">
                 <div class="form">
                     <h1>Create Account</h1>
-                    <input type="text" name="username" class="username" placeholder="Name" />
-                    <input type="email" name="email" class="email" placeholder="Email" />
+                    <input type="email" name="username" class="email" placeholder="Email" />
                     <input type="password" name="password" class="password" placeholder="Password" />
                     <input type="hidden"
                            th:name="${_csrf.parameterName}"
@@ -30,7 +29,7 @@
             <div class="form-container sign-in-container">
                 <form action="/login" method="post" class="form">
                     <h1>Sign in</h1>
-                    <input  type="text" name="username" placeholder="Name" />
+                    <input type="email" name="username" placeholder="Email" />
                     <input type="password" name="password" placeholder="Password" />
                     <input type="hidden"
                            th:name="${_csrf.parameterName}"

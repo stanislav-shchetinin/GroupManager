@@ -8,7 +8,7 @@ databaseChangeLog:
               columns:
                 -  column:
                      name:  username
-                     type:  varchar(256)
+                     type:  varchar(512)
                      constraints:
                        primaryKey:  true
                 -  column:
@@ -16,11 +16,6 @@ databaseChangeLog:
                      type:  varchar(512)
                      constraints:
                        nullable:  false
-                - column:
-                    name: email
-                    type: varchar(512)
-                    constraints:
-                      nullable: false
                 - column:
                     name: activation_code
                     type: varchar(512)

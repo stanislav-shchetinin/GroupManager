@@ -51,7 +51,7 @@ public class RegistrationService {
     }
 
     private void sendEmail(User user){
-        String email = user.getEmail();
+        String email = user.getUsername();
         if (StringUtils.hasText(email)){
             String link = String.format("http://localhost:8080/activation/%s", user.getActivationCode());
             String message = String.format(
