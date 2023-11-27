@@ -5,11 +5,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Data
 @Setter
 @Getter
 @Entity
-@ToString
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
