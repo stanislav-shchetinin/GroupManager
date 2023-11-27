@@ -1,0 +1,15 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/index.js",
+  "scripts": {
+    "start": "node js/index.js",
+    "dev": "nodemon js/index.js"
+  },
+  "author": "Stas Shchetinin <stas.shc@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

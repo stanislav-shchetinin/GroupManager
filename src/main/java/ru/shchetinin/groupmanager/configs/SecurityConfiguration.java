@@ -72,6 +72,8 @@ public class SecurityConfiguration {
                     csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"));
                 })
                 .cors(withDefaults())
+                /*.csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)*/
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
