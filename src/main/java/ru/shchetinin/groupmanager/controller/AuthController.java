@@ -18,33 +18,17 @@ import ru.shchetinin.groupmanager.dto.JwtResponse;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.UserIsNotActiveException;
 import ru.shchetinin.groupmanager.responses.Response;
+import ru.shchetinin.groupmanager.services.AuthService;
 import ru.shchetinin.groupmanager.services.UserService;
 import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserRepository userRepository;
-    private final UserService userService;
-    private final JwtTokenUtils jwtTokenUtils;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
     @PostMapping("/auth")
     public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
-
-        User user = userRepository.findByUsername(authRequest.getUsername());
-        if (user == null ||
-                !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())){
-            throw new UsernameNotFoundException("Uncorrected username or password");
-        }
-        if (!user.isEnabled()){
-            throw new UserIsNotActiveException("User's email is not active");
-        }
-
-        UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
-        String token = jwtTokenUtils.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
-
+        return authService.createAuthToken(authRequest);
     }
 
 }
