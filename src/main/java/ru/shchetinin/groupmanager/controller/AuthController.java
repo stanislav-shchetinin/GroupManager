@@ -16,6 +16,7 @@ import ru.shchetinin.groupmanager.dao.UserRepository;
 import ru.shchetinin.groupmanager.dto.JwtRequest;
 import ru.shchetinin.groupmanager.dto.JwtResponse;
 import ru.shchetinin.groupmanager.entities.User;
+import ru.shchetinin.groupmanager.exceptions.UserIsNotActiveException;
 import ru.shchetinin.groupmanager.responses.Response;
 import ru.shchetinin.groupmanager.services.UserService;
 import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
@@ -28,11 +29,15 @@ public class AuthController {
     private final JwtTokenUtils jwtTokenUtils;
     private final PasswordEncoder passwordEncoder;
     @PostMapping("/auth")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
+    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
 
         User user = userRepository.findByUsername(authRequest.getUsername());
-        if (user == null || !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())){
+        if (user == null ||
+                !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())){
             throw new UsernameNotFoundException("Uncorrected username or password");
+        }
+        if (!user.isEnabled()){
+            throw new UserIsNotActiveException("User's email is not active");
         }
 
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());

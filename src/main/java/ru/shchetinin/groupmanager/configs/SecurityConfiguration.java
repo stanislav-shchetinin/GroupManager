@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -58,9 +59,6 @@ public class SecurityConfiguration {
                                         new AntPathRequestMatcher("/registration", HttpMethod.POST.name()))
                                 .permitAll()
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/login"))
-                                .permitAll()
-                                .requestMatchers(
                                         new AntPathRequestMatcher("/auth"))
                                 .permitAll()
                                 .requestMatchers(
@@ -79,16 +77,18 @@ public class SecurityConfiguration {
                                         new AntPathRequestMatcher("/v3/api-docs", HttpMethod.GET.name()))
                                 .permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/home", HttpMethod.GET.name() ))
-                                .hasAnyRole(RoleCheck.USER.name(), RoleCheck.ADMIN.name())
+                                .authenticated()
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling.authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
-                ))
+                    );
+                })
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

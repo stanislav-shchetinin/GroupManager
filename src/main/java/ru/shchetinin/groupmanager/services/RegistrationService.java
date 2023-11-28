@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +65,7 @@ public class RegistrationService {
         }
     }
 
-    public RedirectView activation(String activationCode) {
+    public void activation(String activationCode) {
         User user = userRepo.findByActivationCode(activationCode);
 
         log.debug(String.valueOf(user == null));
@@ -75,6 +76,5 @@ public class RegistrationService {
         user.setEnabled(true);
         user.setActivationCode(null);
         userRepo.save(user);
-        return new RedirectView("/login");
     }
 }

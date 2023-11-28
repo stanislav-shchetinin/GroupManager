@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.shchetinin.groupmanager.entities.User;
@@ -40,8 +41,9 @@ public class RegistrationController {
     }
 
     @GetMapping("/activation/{activationCode}")
-    public RedirectView activation(@PathVariable String activationCode){
-        return registrationService.activation(activationCode);
+    @ResponseStatus(HttpStatus.OK)
+    public void activation(@PathVariable String activationCode){
+        registrationService.activation(activationCode);
     }
 
 }
