@@ -1,16 +1,14 @@
-const http = require('http')
-const fs = require('fs')
-const path = require('path')
+const http = require('http');
+const  fs = require('fs');
+const path = require('path');
+
 const commonPath = __dirname.substring(0, __dirname.length - 2);
-export const URL_BACKEND = 'localhost:8080'
 
 const server = http.createServer((req, res) => {
 
     let ext = path.extname(req.url.toString());
     let contentType;
     let filePath = '';
-    console.log(ext);
-    console.log(req.url.toString())
 
     if (ext === '.html' || !ext){
         contentType = 'text/html';
@@ -19,11 +17,9 @@ const server = http.createServer((req, res) => {
         contentType = 'text/css';
         filePath = path.join(commonPath, req.url);
     } else if (ext === '.js'){
-        contentType = 'text/js';
+        contentType = 'application/javascript';
         filePath = path.join(commonPath, req.url);
     }
-
-    console.log(filePath)
 
     fs.readFile(filePath, (err, content) => {
         if (err) {

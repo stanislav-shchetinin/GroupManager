@@ -1,5 +1,4 @@
-import {URL_BACKEND} from "./index";
-
+const btnReg = document.getElementById('btn-reg');
 const validInput = (str) => {
     return str != null && str !== "";
 }
@@ -8,7 +7,6 @@ const reg = () => {
     const form = document.querySelector('.sign-up-container');
     const inputPassword = form.querySelector('.password')
     const inputEmail = form.querySelector('.email')
-    const csrfToken = document.querySelector('meta[name=_csrf_token]').content;
 
     const json = {"username": inputEmail.value, "password": inputPassword.value}
 
@@ -23,7 +21,6 @@ const reg = () => {
          method: 'POST',
          headers: {
              'Content-Type': 'application/json;charset=utf-8',
-             'X-CSRF-TOKEN': csrfToken
          },
          body: JSON.stringify(json)
      }).then(r => {
@@ -36,3 +33,5 @@ const reg = () => {
          }
      });
 }
+
+btnReg.addEventListener('click', reg);

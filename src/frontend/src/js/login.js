@@ -2,6 +2,7 @@ const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 
+const URL_BACKEND = 'http://localhost:8080';
 signUpButton.addEventListener('click', () => {
     container.classList.add("right-panel-active");
 });

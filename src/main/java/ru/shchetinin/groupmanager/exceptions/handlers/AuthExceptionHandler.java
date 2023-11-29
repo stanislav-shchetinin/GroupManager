@@ -14,8 +14,8 @@ public class AuthExceptionHandler {
     @ExceptionHandler({UsernameNotFoundException.class})
     public ResponseEntity<Response> handleActivationCodeNotFoundException(Exception e) {
         return new ResponseEntity<>(
-                new Response(HttpStatus.UNAUTHORIZED.value(), e.getMessage()),
-                HttpStatus.UNAUTHORIZED);
+                new Response(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+                HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler({UserIsNotActiveException.class})
     public ResponseEntity<Response> handleUserIsNotActiveException(Exception e) {

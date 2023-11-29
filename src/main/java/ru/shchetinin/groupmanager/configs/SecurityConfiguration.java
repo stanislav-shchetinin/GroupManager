@@ -22,10 +22,16 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.util.pattern.PathPatternParser;
 import ru.shchetinin.groupmanager.enums.roles.RoleCheck;
 import ru.shchetinin.groupmanager.services.UserService;
 
 import javax.sql.DataSource;
+
+import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -52,10 +58,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
-                                        PathRequest.toStaticResources().atCommonLocations()
-                                )
-                                .permitAll()
-                                .requestMatchers(
                                         new AntPathRequestMatcher("/registration", HttpMethod.POST.name()))
                                 .permitAll()
                                 .requestMatchers(
@@ -69,7 +71,7 @@ public class SecurityConfiguration {
                                 .permitAll()
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/h2-console/**"))
-                                .hasRole(RoleCheck.ADMIN.name())
+                                .permitAll()
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/swagger-ui/index.html", HttpMethod.GET.name()))
                                 .permitAll()
@@ -81,22 +83,28 @@ public class SecurityConfiguration {
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .exceptionHandling(exceptionHandling -> {
+                .exceptionHandling(exceptionHandling ->
                     exceptionHandling.authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
-                    );
-                })
+                    )
+                )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }
