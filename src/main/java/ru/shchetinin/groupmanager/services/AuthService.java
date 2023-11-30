@@ -1,6 +1,9 @@
 package ru.shchetinin.groupmanager.services;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +18,8 @@ import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.UserIsNotActiveException;
 import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
 
+import java.time.Duration;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -22,7 +27,11 @@ public class AuthService {
     private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final PasswordEncoder passwordEncoder;
-    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
+
+    @Value("${jwt.lifetime}")
+    private Duration tokenLifeTime;
+    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest,
+                                                       HttpServletResponse response){
 
         User user = userRepository.findByUsername(authRequest.getUsername());
         if (user == null ||

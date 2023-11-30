@@ -1,6 +1,4 @@
-const btnAuth = document.getElementById('btn-auth');
 const auth = () => {
-    const container = document.getElementById('container');
     const form = document.querySelector('.sign-in-container');
     const inputPassword = form.querySelector('.password')
     const inputEmail = form.querySelector('.email')
@@ -20,20 +18,23 @@ const auth = () => {
             'Content-Type': 'application/json;charset=utf-8',
         },
         body: JSON.stringify(json)
-    }).then(r => {
-        if (r.ok){
-            console.log(r.body)
-            return r.body;
-        } else if (r.status === 401){
+    }).then(response => {
+        if (response.ok){
+            response.json().then(json => localStorage.setItem("jwt", json.token.toString()));
+            console.log(localStorage.getItem("jwt"))
+        } else if (response.status === 401){
             alert("Please activate the mail");
-        } else if (r.status === 404){
+        } else if (response.status === 404){
             alert("Invalid username or password");
         }
         else {
             alert("Oops.. is something wrong")
         }
     });
+
 }
 
+const btnAuth = document.getElementById('btn-auth');
 btnAuth.addEventListener('click', auth);
+
 

@@ -1,7 +1,3 @@
-const btnReg = document.getElementById('btn-reg');
-const validInput = (str) => {
-    return str != null && str !== "";
-}
 const reg = () => {
     const container = document.getElementById('container');
     const form = document.querySelector('.sign-up-container');
@@ -23,10 +19,10 @@ const reg = () => {
              'Content-Type': 'application/json;charset=utf-8',
          },
          body: JSON.stringify(json)
-     }).then(r => {
-         if (r.ok){
+     }).then(response => {
+         if (response.ok){
              container.classList.remove("right-panel-active");
-         } else if (r.status === 409){
+         } else if (response.status === 409){
             alert("User with this name is already exist");
          } else {
              alert("Oops.. is something wrong")
@@ -34,4 +30,5 @@ const reg = () => {
      });
 }
 
+const btnReg = document.getElementById('btn-reg');
 btnReg.addEventListener('click', reg);

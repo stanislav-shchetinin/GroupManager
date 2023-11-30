@@ -1,5 +1,6 @@
 package ru.shchetinin.groupmanager.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,9 @@ import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/auth")
-    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
-        return authService.createAuthToken(authRequest);
+    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest,
+                                                       HttpServletResponse response){
+        return authService.createAuthToken(authRequest, response);
     }
 
 }
