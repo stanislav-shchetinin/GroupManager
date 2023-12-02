@@ -1,4 +1,4 @@
-package ru.shchetinin.groupmanager.authorization.controller;
+package ru.shchetinin.groupmanager.authorization.controllers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

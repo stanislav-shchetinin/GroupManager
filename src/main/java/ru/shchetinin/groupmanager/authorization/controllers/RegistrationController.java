@@ -1,4 +1,4 @@
-package ru.shchetinin.groupmanager.authorization.controller;
+package ru.shchetinin.groupmanager.authorization.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
