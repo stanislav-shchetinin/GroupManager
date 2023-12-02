@@ -1,4 +1,6 @@
-const reg = () => {
+import {URL_BACKEND, validInput} from "./main.js";
+
+export const reg = () => {
     const container = document.getElementById('container');
     const form = document.querySelector('.sign-up-container');
     const inputPassword = form.querySelector('.password')
@@ -29,6 +31,3 @@ const reg = () => {
          }
      });
 }
-
-const btnReg = document.getElementById('btn-reg');
-btnReg.addEventListener('click', reg);

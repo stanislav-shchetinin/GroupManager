@@ -1,4 +1,6 @@
-const auth = () => {
+import {HOME, URL_BACKEND, URL_FRONTEND, validInput} from "./main.js";
+
+export const auth = () => {
     const form = document.querySelector('.sign-in-container');
     const inputPassword = form.querySelector('.password')
     const inputEmail = form.querySelector('.email')
@@ -11,7 +13,6 @@ const auth = () => {
             return;
         }
     }
-
     fetch(URL_BACKEND + '/auth', {
         method: 'POST',
         headers: {
@@ -21,7 +22,7 @@ const auth = () => {
     }).then(response => {
         if (response.ok){
             response.json().then(json => localStorage.setItem("jwt", json.token.toString()));
-            console.log(localStorage.getItem("jwt"))
+            window.location.replace(URL_FRONTEND + HOME)
         } else if (response.status === 401){
             alert("Please activate the mail");
         } else if (response.status === 404){
@@ -34,7 +35,5 @@ const auth = () => {
 
 }
 
-const btnAuth = document.getElementById('btn-auth');
-btnAuth.addEventListener('click', auth);
 
 

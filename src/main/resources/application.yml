@@ -39,3 +39,6 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   lifetime: 30m
+
+services:
+  frontend: "http://localhost:3000"
