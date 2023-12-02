@@ -1,4 +1,4 @@
-package ru.shchetinin.groupmanager.entities;
+package ru.shchetinin.groupmanager.authorization.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,13 +8,11 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "authorities")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Authority {
     @Id
     private String username;
-    private String password;
-    private String activationCode;
-    private boolean enabled;
+    private String authority;
 }
