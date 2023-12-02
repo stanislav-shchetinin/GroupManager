@@ -12,7 +12,7 @@ import ru.shchetinin.groupmanager.responses.Response;
 @ControllerAdvice
 public class AuthExceptionHandler {
     @ExceptionHandler({UsernameNotFoundException.class})
-    public ResponseEntity<Response> handleActivationCodeNotFoundException(Exception e) {
+    public ResponseEntity<Response> handleUsernameNotFoundException(Exception e) {
         return new ResponseEntity<>(
                 new Response(HttpStatus.NOT_FOUND.value(), e.getMessage()),
                 HttpStatus.NOT_FOUND);
