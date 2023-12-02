@@ -38,11 +38,9 @@ public class AuthService {
         if (!user.isEnabled()){
             throw new UserIsNotActiveException("User's email is not active");
         }
-
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtils.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
-
     }
 }

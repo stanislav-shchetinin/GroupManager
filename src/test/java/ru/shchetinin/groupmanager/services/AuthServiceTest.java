@@ -16,6 +16,7 @@ import ru.shchetinin.groupmanager.dao.UserRepository;
 import ru.shchetinin.groupmanager.dto.JwtRequest;
 import ru.shchetinin.groupmanager.dto.JwtResponse;
 import ru.shchetinin.groupmanager.entities.User;
+import ru.shchetinin.groupmanager.exceptions.UserIsNotActiveException;
 import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
 
 import java.util.Collections;
@@ -51,9 +52,8 @@ public class AuthServiceTest {
     public void getUser_invalidName_returnUsernameNotFoundException() {
         when(userRepository.findByUsername(authRequest.getUsername()))
                 .thenReturn(null);
-        Throwable thrown = assertThrows(UsernameNotFoundException.class,
+        assertThrows(UsernameNotFoundException.class,
                 () -> authService.createAuthToken(authRequest));
-        assertNotNull(thrown);
     }
 
     @Test
@@ -63,21 +63,20 @@ public class AuthServiceTest {
         when(userRepository.findByUsername(authRequest.getUsername()))
                 .thenReturn(user);
         when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(false);
-        Throwable thrown = assertThrows(UsernameNotFoundException.class,
+        assertThrows(UsernameNotFoundException.class,
                 () -> authService.createAuthToken(authRequest));
-        assertNotNull(thrown);
     }
 
     @Test
     public void getUser_isNotActive_returnUserIsNotActiveException() {
         User user = mock(User.class);
+        user.setPassword("Password");
         when(userRepository.findByUsername(authRequest.getUsername()))
                 .thenReturn(user);
-        when(user.getPassword()).thenReturn("Password");
+        when(passwordEncoder.matches(authRequest.getPassword(), user.getPassword())).thenReturn(true);
         when(user.isEnabled()).thenReturn(false);
-        Throwable thrown = assertThrows(UsernameNotFoundException.class,
+        assertThrows(UserIsNotActiveException.class,
                 () -> authService.createAuthToken(authRequest));
-        assertNotNull(thrown);
     }
 
     @Test
