@@ -28,10 +28,7 @@ public class AuthService {
     private final JwtTokenUtils jwtTokenUtils;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${jwt.lifetime}")
-    private Duration tokenLifeTime;
-    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest,
-                                                       HttpServletResponse response){
+    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
 
         User user = userRepository.findByUsername(authRequest.getUsername());
         if (user == null ||

@@ -28,9 +28,8 @@ import ru.shchetinin.groupmanager.utils.JwtTokenUtils;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/auth")
-    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest,
-                                                       HttpServletResponse response){
-        return authService.createAuthToken(authRequest, response);
+    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest){
+        return authService.createAuthToken(authRequest);
     }
 
 }

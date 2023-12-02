@@ -19,6 +19,9 @@ const server = http.createServer((req, res) => {
     } else if (ext === '.js'){
         contentType = 'application/javascript';
         filePath = path.join(commonPath, req.url);
+    } else if (ext === '.ico'){
+        contentType = 'image/x-icon'
+        filePath = path.join(commonPath, req.url);
     }
 
     fs.readFile(filePath, (err, content) => {
