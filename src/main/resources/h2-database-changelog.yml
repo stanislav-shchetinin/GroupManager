@@ -5,3 +5,5 @@ databaseChangeLog:
       file: classpath:changelogs/create-authorities.yml
   - include:
       file: classpath:changelogs/create-admin.yml
+  - include:
+      file: classpath:changelogs/create-indexes.yml
