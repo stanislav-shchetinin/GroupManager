@@ -7,3 +7,9 @@ databaseChangeLog:
       file: classpath:changelogs/create-admin.yml
   - include:
       file: classpath:changelogs/create-indexes.yml
+  - include:
+      file: classpath:changelogs/create-user-group-details.yml
+  - include:
+      file: classpath:changelogs/create-groups.yml
+  - include:
+      file: classpath:changelogs/create-users-groups.yml

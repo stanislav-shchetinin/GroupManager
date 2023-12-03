@@ -1,0 +1,13 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  create-user-group-details
+       author:  Stas
+       changes:
+         -  createTable:
+              tableName: user_group_details
+              columns:
+                -  column:
+                     name:  username
+                     type:  varchar(512)
+                     constraints:
+                       primaryKey:  true

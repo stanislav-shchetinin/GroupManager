@@ -1,9 +1,9 @@
 package ru.shchetinin.groupmanager.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,4 +17,13 @@ public class User {
     private String password;
     private String activationCode;
     private boolean enabled;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "members")
+    private List<Group> groups;
+
 }

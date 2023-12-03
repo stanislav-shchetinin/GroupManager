@@ -1,0 +1,22 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  create-users-groups
+       author:  Stas
+       changes:
+         -  createTable:
+              tableName:  users_groups
+              columns:
+                -  column:
+                     name:  group_id
+                     type:  varchar(512)
+                     constraints:
+                       primaryKey:  true
+                       foreignKeyName: fk_group
+                       references: groups_e(id)
+                - column:
+                    name: user_name
+                    type: varchar(512)
+                    constraints:
+                      primaryKey:  true
+                      foreignKeyName: fk_user
+                      references: users(username)
