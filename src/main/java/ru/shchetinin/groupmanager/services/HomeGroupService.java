@@ -1,48 +1,43 @@
-package ru.shchetinin.groupmanager.controllers;
+package ru.shchetinin.groupmanager.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.shchetinin.groupmanager.dto.GroupDto;
 import ru.shchetinin.groupmanager.entities.Group;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.GroupAlreadyExistException;
 import ru.shchetinin.groupmanager.exceptions.NotFoundGroupDeleteException;
 import ru.shchetinin.groupmanager.exceptions.NotRealCreatorException;
+import ru.shchetinin.groupmanager.exceptions.UserNotFoundException;
 import ru.shchetinin.groupmanager.repositories.GroupRepository;
 import ru.shchetinin.groupmanager.repositories.UserRepository;
-import ru.shchetinin.groupmanager.responses.Response;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/home/groups")
+@Service
 @RequiredArgsConstructor
-public class HomeController {
+public class HomeGroupService {
 
     private final UserRepository userRepo;
     private final GroupRepository groupRepository;
-    @GetMapping
-    public String groups(Principal principal){
+
+    public ResponseEntity<List<Group>> getGroups(Principal principal){
         User user = userRepo.findByUsername(principal.getName());
         if (user != null){
-            String ret = "{";
-            for (Group group : user.getGroups()){
-                ret += group.getName() + ",";
-            }
-            ret += "}";
-            return ret;
+            return ResponseEntity.ok(user.getGroups());
         }
-        return "Nooooo...";
+        throw new UserNotFoundException();
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
-    public void createNewGroup(@RequestBody GroupDto groupDto, Principal principal){
+    public void createNewGroup(GroupDto groupDto, Principal principal){
         User user = userRepo.findByUsername(principal.getName());
         Optional<Group> groupInBase = groupRepository.findById(groupDto.getId());
         if (groupInBase.isPresent()){
@@ -57,9 +52,8 @@ public class HomeController {
         group.getMembers().add(user);
         groupRepository.save(group);
     }
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteGroup(@PathVariable UUID id, Principal principal){
+
+    public void deleteGroup(UUID id, Principal principal){
         Optional<Group> group = groupRepository.findById(id);
         if (group.isPresent()){
             String nameRealCreator = group.get().getOwner().getUsername();
@@ -73,4 +67,5 @@ public class HomeController {
             throw new NotFoundGroupDeleteException();
         }
     }
+
 }

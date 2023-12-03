@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.shchetinin.groupmanager.exceptions.GroupAlreadyExistException;
 import ru.shchetinin.groupmanager.exceptions.NotFoundGroupDeleteException;
 import ru.shchetinin.groupmanager.exceptions.NotRealCreatorException;
+import ru.shchetinin.groupmanager.exceptions.UserNotFoundException;
 import ru.shchetinin.groupmanager.responses.Response;
 
 @ControllerAdvice
@@ -29,5 +30,12 @@ public class HomeExceptionHandler {
         return new ResponseEntity<>(
                 new Response(HttpStatus.NO_CONTENT.value(), "Group isn't founded."),
                 HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler({UserNotFoundException.class})
+    public ResponseEntity<Response> handleUserNotFoundException(Exception e) {
+        return new ResponseEntity<>(
+                new Response(HttpStatus.NOT_FOUND.value(), "User isn't founded."),
+                HttpStatus.NOT_FOUND);
     }
 }
