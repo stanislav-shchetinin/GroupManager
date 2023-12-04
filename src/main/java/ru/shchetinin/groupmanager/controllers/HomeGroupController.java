@@ -15,10 +15,7 @@ import ru.shchetinin.groupmanager.repositories.UserRepository;
 import ru.shchetinin.groupmanager.services.HomeGroupService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/home/groups")
@@ -27,7 +24,7 @@ public class HomeGroupController {
 
     private final HomeGroupService homeGroupService;
     @GetMapping
-    public ResponseEntity<List<Group>> getGroups(Principal principal){
+    public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
         return homeGroupService.getGroups(principal);
     }
 
@@ -36,7 +33,7 @@ public class HomeGroupController {
     public void createNewGroup(@RequestBody GroupDto groupDto, Principal principal){
         homeGroupService.createNewGroup(groupDto, principal);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
     public void deleteGroup(@PathVariable UUID id, Principal principal){
         homeGroupService.deleteGroup(id, principal);

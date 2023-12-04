@@ -17,10 +17,11 @@ import ru.shchetinin.groupmanager.repositories.GroupRepository;
 import ru.shchetinin.groupmanager.repositories.UserRepository;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static ru.shchetinin.groupmanager.util.Checker.isRealCreator;
+import static ru.shchetinin.groupmanager.util.Checker.isUserExist;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +30,20 @@ public class HomeGroupService {
     private final UserRepository userRepo;
     private final GroupRepository groupRepository;
 
-    public ResponseEntity<List<Group>> getGroups(Principal principal){
+    public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
         User user = userRepo.findByUsername(principal.getName());
-        if (user != null){
-            return ResponseEntity.ok(user.getGroups());
-        }
-        throw new UserNotFoundException();
+        isUserExist(user);
+        return ResponseEntity.ok(
+                user.getGroups()
+                        .stream()
+                        .map(
+                                group -> {
+                                    return new GroupDto(group.getId(), group.getName(), group.getDescription());
+                                }
+
+                        )
+                        .collect(Collectors.toList())
+        );
     }
 
     public void createNewGroup(GroupDto groupDto, Principal principal){
@@ -47,8 +56,7 @@ public class HomeGroupService {
                 groupDto.getId(),
                 groupDto.getName(),
                 groupDto.getDescription(),
-                user,
-                new ArrayList<>());
+                user);
         group.getMembers().add(user);
         groupRepository.save(group);
     }
@@ -56,12 +64,7 @@ public class HomeGroupService {
     public void deleteGroup(UUID id, Principal principal){
         Optional<Group> group = groupRepository.findById(id);
         if (group.isPresent()){
-            String nameRealCreator = group.get().getOwner().getUsername();
-            String nameCheckCreator = principal.getName();
-            boolean isRealCreator = nameRealCreator.equals(nameCheckCreator);
-            if (!isRealCreator){
-                throw new NotRealCreatorException();
-            }
+            isRealCreator(group.get(), principal);
             groupRepository.delete(group.get());
         } else {
             throw new NotFoundGroupDeleteException();

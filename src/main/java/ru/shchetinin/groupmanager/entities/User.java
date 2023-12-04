@@ -3,7 +3,9 @@ package ru.shchetinin.groupmanager.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
     private String username;
     private String password;
@@ -24,6 +27,6 @@ public class User {
                     CascadeType.MERGE
             },
             mappedBy = "members")
-    private List<Group> groups;
+    private Set<Group> groups = new HashSet<>();
 
 }
