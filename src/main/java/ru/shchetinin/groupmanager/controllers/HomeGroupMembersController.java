@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.shchetinin.groupmanager.dto.UserDto;
 import ru.shchetinin.groupmanager.entities.Group;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.NotFoundGroupException;
@@ -12,9 +13,11 @@ import ru.shchetinin.groupmanager.repositories.GroupRepository;
 import ru.shchetinin.groupmanager.repositories.UserRepository;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static ru.shchetinin.groupmanager.util.Checker.*;
 
@@ -27,14 +30,17 @@ public class HomeGroupMembersController {
     private final GroupRepository groupRepository;
 
     @GetMapping
-    public ResponseEntity<Set<User>> getUsersFromGroup(@PathVariable UUID groupId,
-                                                       Principal principal){
+    public ResponseEntity<List<UserDto>> getUsersFromGroup(@PathVariable UUID groupId,
+                                                           Principal principal){
         Optional<Group> group = groupRepository.findById(groupId);
 
         isGroupExist(group);
         isRealCreator(group.get(), principal);
 
-        return ResponseEntity.ok(group.get().getMembers());
+        return ResponseEntity.ok(group.get().getMembers()
+                .stream()
+                .map(user -> new UserDto(user.getUsername()))
+                .collect(Collectors.toList()));
 
     }
     /**
