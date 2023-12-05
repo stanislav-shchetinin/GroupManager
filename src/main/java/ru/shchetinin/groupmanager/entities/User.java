@@ -29,4 +29,10 @@ public class User {
             mappedBy = "members")
     private Set<Group> groups = new HashSet<>();
 
+    public User(String username, String password, String activationCode, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.activationCode = activationCode;
+        this.enabled = enabled;
+    }
 }

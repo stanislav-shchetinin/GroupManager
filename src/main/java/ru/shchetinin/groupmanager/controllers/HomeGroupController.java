@@ -19,7 +19,7 @@ import java.security.Principal;
 import java.util.*;
 
 @RestController
-@RequestMapping("/home/groups")
+@RequestMapping("/groups")
 @RequiredArgsConstructor
 public class HomeGroupController {
 

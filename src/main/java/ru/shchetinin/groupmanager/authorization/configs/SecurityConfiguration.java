@@ -73,7 +73,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/v3/api-docs", HttpMethod.GET.name()))
                                 .permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/home/groups/**"))
+                                .requestMatchers(new AntPathRequestMatcher("/groups/**"))
                                 .authenticated()
                                 .anyRequest().hasRole(RoleCheck.ADMIN.name())
                 )
