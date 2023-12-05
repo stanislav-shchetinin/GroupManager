@@ -30,12 +30,10 @@ public class HomeGroupService {
 
     private final UserRepository userRepo;
     private final GroupRepository groupRepository;
-    private final JoinedUserGroupRepository joinedUserGroupRepository;
 
     public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
         User user = userRepo.findByUsername(principal.getName());
         isUserExist(user);
-        System.out.println(joinedUserGroupRepository.findByUser(user));
         return ResponseEntity.ok(
                 user.getGroups()
                         .stream()

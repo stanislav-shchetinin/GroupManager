@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserMinusDto {
     private String username;
-    private Integer numberClasses;
+    private Integer minus;
 }

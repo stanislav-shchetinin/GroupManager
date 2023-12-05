@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserPlusDto {
     private String username;
-    private Integer numberClasses;
+    private Integer plus;
 }
