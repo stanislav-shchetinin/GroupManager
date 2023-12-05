@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.shchetinin.groupmanager.dto.GroupDto;
+import ru.shchetinin.groupmanager.dto.ListsGroupsDto;
 import ru.shchetinin.groupmanager.entities.Group;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.GroupAlreadyExistException;
@@ -24,7 +25,7 @@ public class HomeGroupController {
 
     private final HomeGroupService homeGroupService;
     @GetMapping
-    public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
+    public ResponseEntity<ListsGroupsDto> getGroups(Principal principal){
         return homeGroupService.getGroups(principal);
     }
 

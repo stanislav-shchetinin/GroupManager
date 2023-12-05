@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.shchetinin.groupmanager.dto.GroupDto;
+import ru.shchetinin.groupmanager.dto.GroupMemberDto;
+import ru.shchetinin.groupmanager.dto.ListsGroupsDto;
 import ru.shchetinin.groupmanager.entities.Group;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.GroupAlreadyExistException;
@@ -30,21 +32,27 @@ public class HomeGroupService {
 
     private final UserRepository userRepo;
     private final GroupRepository groupRepository;
+    private final JoinedUserGroupRepository jugRepository;
 
-    public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
+    public ResponseEntity<ListsGroupsDto> getGroups(Principal principal){
+        ListsGroupsDto listsGroupsDto = new ListsGroupsDto();
         User user = userRepo.findByUsername(principal.getName());
         isUserExist(user);
-        return ResponseEntity.ok(
-                user.getGroups()
-                        .stream()
-                        .map(
-                                group -> {
-                                    return new GroupDto(group.getId(), group.getName(), group.getDescription());
-                                }
-
-                        )
-                        .collect(Collectors.toList())
-        );
+        user.getGroups()
+                .forEach(group -> {
+                    GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDescription());
+                    if (group.getOwner().equals(user)){
+                        listsGroupsDto.getAdminGroups().add(groupDto);
+                    } else {
+                        listsGroupsDto.getMemberGroups().add(
+                                new GroupMemberDto(
+                                    groupDto,
+                                    jugRepository.findByUserAndGroup(user, group).getNumberClasses()
+                                )
+                        );
+                    }
+                });
+        return ResponseEntity.ok(listsGroupsDto);
     }
 
     public void createNewGroup(GroupDto groupDto, Principal principal){
