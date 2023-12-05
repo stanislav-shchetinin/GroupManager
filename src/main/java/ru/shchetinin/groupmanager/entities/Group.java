@@ -39,7 +39,6 @@ public class Group {
     @JoinTable(name = "users_groups",
             joinColumns = { @JoinColumn(name = "group_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_name") })
-
     private Set<User> members = new HashSet<>();
 
     public Group(UUID id, String name, String description, User owner){

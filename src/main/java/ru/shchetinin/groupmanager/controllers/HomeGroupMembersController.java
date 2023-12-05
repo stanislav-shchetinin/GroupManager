@@ -63,7 +63,7 @@ public class HomeGroupMembersController {
 
     }
 
-    @PostMapping("/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUserFromGroup(@PathVariable UUID groupId,
                                @PathVariable String userId,

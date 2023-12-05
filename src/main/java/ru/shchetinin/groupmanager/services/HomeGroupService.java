@@ -14,6 +14,7 @@ import ru.shchetinin.groupmanager.exceptions.NotFoundGroupDeleteException;
 import ru.shchetinin.groupmanager.exceptions.NotRealCreatorException;
 import ru.shchetinin.groupmanager.exceptions.UserNotFoundException;
 import ru.shchetinin.groupmanager.repositories.GroupRepository;
+import ru.shchetinin.groupmanager.repositories.JoinedUserGroupRepository;
 import ru.shchetinin.groupmanager.repositories.UserRepository;
 
 import java.security.Principal;
@@ -29,10 +30,12 @@ public class HomeGroupService {
 
     private final UserRepository userRepo;
     private final GroupRepository groupRepository;
+    private final JoinedUserGroupRepository joinedUserGroupRepository;
 
     public ResponseEntity<List<GroupDto>> getGroups(Principal principal){
         User user = userRepo.findByUsername(principal.getName());
         isUserExist(user);
+        System.out.println(joinedUserGroupRepository.findByUser(user));
         return ResponseEntity.ok(
                 user.getGroups()
                         .stream()
