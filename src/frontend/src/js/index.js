@@ -9,16 +9,18 @@ const server = http.createServer((req, res) => {
     let ext = path.extname(req.url.toString());
     let contentType;
     let filePath = '';
-
+    const params = req.url.split("/");
+    const lastParam = params[params.length - 1];
     if (ext === '.html' || !ext){
         contentType = 'text/html';
-        filePath = path.join(commonPath, 'public', (req.url === '/' ? 'index.html' : req.url) + (!ext ? '.html' : ''));
+
+        filePath = path.join(commonPath, 'public', (req.url === '/' ? 'index.html' : lastParam + (!ext ? '.html' : '')));
     } else if (ext === '.css'){
         contentType = 'text/css';
-        filePath = path.join(commonPath, req.url);
+        filePath = path.join(commonPath, 'css', lastParam);
     } else if (ext === '.js'){
         contentType = 'application/javascript';
-        filePath = path.join(commonPath, req.url);
+        filePath = path.join(commonPath, 'js', lastParam);
     } else if (ext === '.ico'){
         contentType = 'image/x-icon'
         filePath = path.join(commonPath, req.url);

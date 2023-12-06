@@ -1,6 +1,10 @@
 #Database
 H2_USERNAME: ADMIN
 H2_PASSWORD: 12345
+H2_PATH: jdbc:h2:mem:db
+POSTGRES_PATH: jdbc:postgresql://localhost/GroupManager
+POSTGRES_USERNAME: postgres
+POSTGRES_PASSWORD: 09082001
 
 #Server
 SERVER_PORT: 8080
