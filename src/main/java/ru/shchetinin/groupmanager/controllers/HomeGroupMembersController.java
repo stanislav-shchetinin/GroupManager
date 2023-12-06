@@ -1,5 +1,7 @@
 package ru.shchetinin.groupmanager.controllers;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,16 @@ public class HomeGroupMembersController {
     private final HomeGroupMembersService homeGroupMembersService;
 
     @GetMapping
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Юзеры получены"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Отказано в доступе"
+            )
+    })
     public ResponseEntity<List<UserDto>> getUsersFromGroup(@PathVariable UUID groupId,
                                                            Principal principal){
         return homeGroupMembersService.getUsersFromGroup(groupId, principal);
@@ -29,6 +41,20 @@ public class HomeGroupMembersController {
      * Админ добавляет юзера
      * */
     @PostMapping("/add")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Пользователь добавлен"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Такой группы нет"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Отказано в доступе"
+            )
+    })
     @ResponseStatus(HttpStatus.OK)
     public void addUserInGroup(@PathVariable UUID groupId,
                                @RequestParam String userId,
@@ -37,6 +63,24 @@ public class HomeGroupMembersController {
     }
 
     @DeleteMapping("/delete")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Пользователь удален"
+            ),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Такого пользователя нет"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Отказано в доступе"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Группа не найдена"
+            )
+    })
     @ResponseStatus(HttpStatus.OK)
     public void deleteUserFromGroup(@PathVariable UUID groupId,
                                     @RequestParam String userId,
@@ -44,6 +88,24 @@ public class HomeGroupMembersController {
         homeGroupMembersService.deleteUserFromGroup(groupId, userId, principal);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успех"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Отказано в доступе"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Группа не найдена"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Пользователь не найден"
+            )
+    })
     @PostMapping("/numberOfClasses/plus")
     @ResponseStatus(HttpStatus.OK)
     public void plusNumberOfCLasses(@PathVariable UUID groupId,
@@ -51,6 +113,25 @@ public class HomeGroupMembersController {
                                     Principal principal){
         homeGroupMembersService.plusNumberOfCLasses(groupId, userPlusDto, principal);
     }
+
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успех"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Отказано в доступе"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Группа не найдена"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Пользователь не найден"
+            )
+    })
     @PostMapping("/numberOfClasses/minus")
     @ResponseStatus(HttpStatus.OK)
     public void minusNumberOfCLasses(@PathVariable UUID groupId,
@@ -59,11 +140,5 @@ public class HomeGroupMembersController {
 
         homeGroupMembersService.minusNumberOfCLasses(groupId, userMinusDto, principal);
     }
-
-    /**
-     * admin: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5ydSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNzAxNzc0NDE1LCJpYXQiOjE3MDE3NzI2MTV9.5lrWKYsECtAVU78TOkhp3FuO513hYlUSvAG9HMWtj5M
-     * user: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGFzLnNoY0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNzAxNzc0Mzc0LCJpYXQiOjE3MDE3NzI1NzR9.K8htxc8RnOKrCU69as9dxLNRP5UIG5sCcbsm9n3xk24
-     * group: a95d3414-921a-11ee-b9d1-0242ac120002
-     * */
 
 }
