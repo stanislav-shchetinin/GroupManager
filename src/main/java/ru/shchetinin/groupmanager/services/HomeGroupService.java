@@ -37,7 +37,7 @@ public class HomeGroupService {
     public ResponseEntity<ListsGroupsDto> getGroups(Principal principal){
         ListsGroupsDto listsGroupsDto = new ListsGroupsDto();
         User user = userRepo.findByUsername(principal.getName());
-        isUserExist(user);
+        //isUserExist(user);
         user.getGroups()
                 .forEach(group -> {
                     GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDescription());

@@ -14,6 +14,19 @@
     <main>
         <button class="button button-shadow btn-back">⬅</button>
         <h1 class="header">Members</h1>
+        <button onclick="window.dialog.showModal();" class="button button-shadow btn-new-group">New person</button>
+
+        <dialog id="dialog">
+            <h2>Add new person</h2>
+            <div class="form-container">
+                <div class="form">
+                    <input type="text" name="name" class="name" placeholder="Name" />
+                    <button class="button button-shadow btn-new-group btn-crete">Add</button>
+                </div>
+            </div>
+            <button onclick="window.dialog.close();" aria-label="close" class="x">❌</button>
+        </dialog>
+
         <ol class="gradient-list members"></ol>
     </main>
     <script type="module" src="../js/members.js"></script>

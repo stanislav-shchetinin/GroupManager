@@ -3,10 +3,7 @@ package ru.shchetinin.groupmanager.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Setter
 @Getter
@@ -28,7 +25,7 @@ public class User implements Comparable<User>{
                     CascadeType.MERGE
             },
             mappedBy = "members")
-    private Set<Group> groups = new TreeSet<>();
+    private List<Group> groups = new ArrayList<>();
 
     public User(String username, String password, String activationCode, boolean enabled) {
         this.username = username;

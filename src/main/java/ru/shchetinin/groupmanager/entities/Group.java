@@ -36,7 +36,7 @@ public class Group implements Comparable<Group>{
     @JoinTable(name = "users_groups",
             joinColumns = { @JoinColumn(name = "group_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_name") })
-    private Set<User> members = new TreeSet<>();
+    private List<User> members = new ArrayList<>();
 
     public Group(UUID id, String name, String description, User owner){
         this.id = id;

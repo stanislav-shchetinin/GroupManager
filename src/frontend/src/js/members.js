@@ -1,4 +1,4 @@
-import {authHeader, HOME, LOGIN, MEMBERS, URL_BACKEND, URL_FRONTEND} from "./main.js";
+import {authHeader, HOME, LOGIN, MEMBERS, URL_BACKEND, URL_FRONTEND, validInput} from "./main.js";
 
 const groupId = localStorage.getItem("groupId");
 const groupName = localStorage.getItem("groupName");
@@ -6,6 +6,24 @@ const groupName = localStorage.getItem("groupName");
 function isNumeric(value) {
     return /^-?\d+$/.test(value);
 }
+
+function deleteUser(id) {
+    fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS + "/delete?userId=" + id, {
+        method: 'DELETE',
+        headers: {
+            'Authorization' : authHeader()
+        },
+    }).then(response => {
+        if (response.ok){
+            window.location.replace(URL_FRONTEND + HOME + "/" + id + MEMBERS)
+        } else if (response.status === 401){
+            window.location.replace(URL_FRONTEND + LOGIN);
+        } else {
+            alert('Couldn\'t delete user');
+        }
+    });
+}
+
 fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
     method: 'GET',
     headers : {
@@ -23,7 +41,7 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
             json.forEach(member => {
                 let paidText = "Admin";
                 if (member.numberClasses != null){
-                    localStorage.setItem(member.username, crypto.randomUUID())
+                    localStorage.setItem(member.username, "user" + crypto.randomUUID())
                     paidText = "Paid classes: " + member.numberClasses;
                     membersList.insertAdjacentHTML('beforeend', `
                         <li> 
@@ -32,7 +50,9 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
                             <button class="button button-shadow btn-number-classes minus ${localStorage.getItem(member.username)}">Minus</button>
                             <br>
                             <button class="button button-shadow btn-number-classes plus ${localStorage.getItem(member.username)}">Add</button>
-                            <input class="input-number-classes">         
+                            <input class="input-number-classes">  
+                            <br>
+                            <button class="button button-shadow btn-number-classes btn-delete ${localStorage.getItem(member.username)}">Delete</button>       
                         </li>
                     `)
                     const btnPlus = document.getElementsByClassName(`plus ${localStorage.getItem(member.username)}`);
@@ -48,6 +68,10 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
                     })
                     btnMinus[0].addEventListener('click', () => {
                         changeNumberClasses("minus", member.username, 1);
+                    })
+                    const btnDelete = document.getElementsByClassName(`btn-delete ${localStorage.getItem(member.username)}`);
+                    btnDelete[0].addEventListener('click', () => {
+                        deleteUser(member.username);
                     })
                 } else {
                     membersList.insertAdjacentHTML('beforeend', `
@@ -91,4 +115,33 @@ const changeNumberClasses = (operation, username, cnt) => {
 const btnBack = document.querySelector('.btn-back');
 btnBack.addEventListener('click', () => {
     window.location.replace(URL_FRONTEND + HOME)
+})
+
+const btnAdd = document.querySelector('.btn-crete');
+
+btnAdd.addEventListener('click', () => {
+
+    const inputName = document.querySelector('.name');
+
+    if (!validInput(inputName.value)){
+        alert('Not correct username');
+    } else {
+        fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS + "/add?userId=" + inputName.value, {
+            method: 'POST',
+            headers: {
+                'Authorization' : authHeader()
+            },
+        }).then(response => {
+            if (response.ok){
+                window.location.replace(URL_FRONTEND + HOME + "/" + groupId + MEMBERS)
+            } else if (response.status === 401){
+                window.location.replace(URL_FRONTEND + LOGIN);
+            } else {
+                alert('Couldn\'t add a person');
+            }
+        });
+    }
+
+
+
 })
