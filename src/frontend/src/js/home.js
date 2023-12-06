@@ -26,6 +26,8 @@ fetch(URL_BACKEND + HOME, {
                 const btn = document.querySelector(`.${group.id}`);
                 btn.addEventListener('click', () => {
                     localStorage.setItem("groupId", group.id);
+                    localStorage.setItem("groupName", group.name);
+                    //console.log(URL_FRONTEND + HOME + "/" + group.id + MEMBERS);
                     window.location.replace(URL_FRONTEND + HOME + "/" + group.id + MEMBERS);
                 })
             })

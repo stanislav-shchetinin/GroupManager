@@ -6,10 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Setter
 @Getter
@@ -17,7 +14,7 @@ import java.util.UUID;
 @Table(name = "groups_e")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Group {
+public class Group implements Comparable<Group>{
 
     @Id
     private UUID id;
@@ -39,7 +36,7 @@ public class Group {
     @JoinTable(name = "users_groups",
             joinColumns = { @JoinColumn(name = "group_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_name") })
-    private Set<User> members = new HashSet<>();
+    private Set<User> members = new TreeSet<>();
 
     public Group(UUID id, String name, String description, User owner){
         this.id = id;
@@ -48,4 +45,8 @@ public class Group {
         this.owner = owner;
     }
 
+    @Override
+    public int compareTo(Group o) {
+        return id.compareTo(o.id);
+    }
 }
