@@ -37,14 +37,14 @@ public class JwtRequestFilterTest {
                 "12345",
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN")));
         String token = jwtTokenUtils.generateToken(user);
-        mockMvc.perform(get("/home")
+        mockMvc.perform(get("/groups")
                 .header("Authorization", String.format("Bearer %s", token)))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getWithoutHeader_returnUnauthorized() throws Exception {
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get("/groups"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -54,7 +54,7 @@ public class JwtRequestFilterTest {
                 "12345",
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN")));
         String token = jwtTokenUtils.generateToken(user);
-        mockMvc.perform(get("/home")
+        mockMvc.perform(get("/groups")
                         .header("Authorization", String.format("Bearer %s1", token)))
                 .andExpect(status().isUnauthorized());
     }

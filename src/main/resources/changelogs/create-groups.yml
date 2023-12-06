@@ -1,6 +1,6 @@
 databaseChangeLog:
   -  changeSet:
-       id:  create-groups
+       id:  create-groups:0.0.5
        author:  Stas
        changes:
          -  createTable:
@@ -18,7 +18,7 @@ databaseChangeLog:
                       nullable: false
                 - column:
                     name: description
-                    type: clob
+                    type: text
                 - column:
                     name: owner_name
                     type: varchar(512)
