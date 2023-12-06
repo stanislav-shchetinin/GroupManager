@@ -17,6 +17,7 @@ import ru.shchetinin.groupmanager.repositories.JoinedUserGroupRepository;
 import ru.shchetinin.groupmanager.repositories.UserRepository;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,7 +40,10 @@ public class HomeGroupMembersService {
         isGroupExist(group);
         isRealCreator(group.get(), principal);
 
-        return ResponseEntity.ok(group.get().getMembers()
+        List<User> members = new ArrayList<>();
+        group.get().getJug().forEach(jug -> members.add(jug.getUser()));
+
+        return ResponseEntity.ok(members
                 .stream()
                 .map(user -> new UserDto(
                         user.getUsername(),
@@ -58,9 +62,9 @@ public class HomeGroupMembersService {
         isGroupExist(group);
         isRealCreator(group.get(), principal);
 
-        group.get().getMembers().add(user);
-        groupRepository.save(group.get());
-        JoinedUserGroup jug = jugRepository.findByUserAndGroup(user, group.get());
+        JoinedUserGroup jug = new JoinedUserGroup();
+        jug.setUser(user);
+        jug.setGroup(group.get());
         jug.setNumberClasses(0);
         jugRepository.save(jug);
     }
@@ -75,8 +79,9 @@ public class HomeGroupMembersService {
         isGroupExist(group);
         isRealCreator(group.get(), principal);
 
-        group.get().getMembers().remove(user);
-        groupRepository.save(group.get());
+        jugRepository.delete(
+                jugRepository.findByUserAndGroup(user, group.get())
+        );
 
     }
 

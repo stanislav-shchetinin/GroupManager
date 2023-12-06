@@ -24,5 +24,5 @@ public class JoinedUserGroup {
     @JoinColumn(name = "user_name")
     private User user;
 
-    private Integer numberClasses = 0;
+    private Integer numberClasses;
 }

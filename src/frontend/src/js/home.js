@@ -27,6 +27,7 @@ fetch(URL_BACKEND + HOME, {
         window.location.replace(URL_FRONTEND + LOGIN);
     } else {
         return r.json().then( json => {
+            console.log(json);
             const adminGroups = json.adminGroups;
             const memberGroups = json.memberGroups;
             const adminList = document.querySelector('.admin');

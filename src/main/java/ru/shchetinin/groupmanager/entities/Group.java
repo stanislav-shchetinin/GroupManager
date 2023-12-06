@@ -28,15 +28,8 @@ public class Group implements Comparable<Group>{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User owner;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "users_groups",
-            joinColumns = { @JoinColumn(name = "group_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_name") })
-    private List<User> members = new ArrayList<>();
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private List<JoinedUserGroup> jug = new ArrayList<>();
 
     public Group(UUID id, String name, String description, User owner){
         this.id = id;

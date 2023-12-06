@@ -10,6 +10,7 @@ import ru.shchetinin.groupmanager.dto.GroupDto;
 import ru.shchetinin.groupmanager.dto.GroupMemberDto;
 import ru.shchetinin.groupmanager.dto.ListsGroupsDto;
 import ru.shchetinin.groupmanager.entities.Group;
+import ru.shchetinin.groupmanager.entities.JoinedUserGroup;
 import ru.shchetinin.groupmanager.entities.User;
 import ru.shchetinin.groupmanager.exceptions.GroupAlreadyExistException;
 import ru.shchetinin.groupmanager.exceptions.NotFoundGroupDeleteException;
@@ -37,8 +38,9 @@ public class HomeGroupService {
     public ResponseEntity<ListsGroupsDto> getGroups(Principal principal){
         ListsGroupsDto listsGroupsDto = new ListsGroupsDto();
         User user = userRepo.findByUsername(principal.getName());
-        //isUserExist(user);
-        user.getGroups()
+        List<Group> groups = new ArrayList<>();
+        user.getJug().forEach(jug -> groups.add(jug.getGroup()));
+        groups
                 .forEach(group -> {
                     GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDescription());
                     if (group.getOwner().equals(user)){
@@ -66,8 +68,11 @@ public class HomeGroupService {
                 groupDto.getName(),
                 groupDto.getDescription(),
                 user);
-        group.getMembers().add(user);
         groupRepository.save(group);
+        JoinedUserGroup jug = new JoinedUserGroup();
+        jug.setGroup(group);
+        jug.setUser(user);
+        jugRepository.save(jug);
     }
 
     public void deleteGroup(UUID id, Principal principal){

@@ -19,13 +19,8 @@ public class User implements Comparable<User>{
     private String activationCode;
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "members")
-    private List<Group> groups = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<JoinedUserGroup> jug = new ArrayList<>();
 
     public User(String username, String password, String activationCode, boolean enabled) {
         this.username = username;

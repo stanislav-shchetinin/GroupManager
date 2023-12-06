@@ -37,7 +37,7 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
         return r.json().then( json => {
             console.log(json)
             const membersList = document.querySelector('.members');
-
+            json.sort();
             json.forEach(member => {
                 let paidText = "Admin";
                 if (member.numberClasses != null){
@@ -50,7 +50,7 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
                             <button class="button button-shadow btn-number-classes minus ${localStorage.getItem(member.username)}">Minus</button>
                             <br>
                             <button class="button button-shadow btn-number-classes plus ${localStorage.getItem(member.username)}">Add</button>
-                            <input class="input-number-classes">  
+                            <input class="input-number-classes ${localStorage.getItem(member.username)}">  
                             <br>
                             <button class="button button-shadow btn-number-classes btn-delete ${localStorage.getItem(member.username)}">Delete</button>       
                         </li>
@@ -58,11 +58,12 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
                     const btnPlus = document.getElementsByClassName(`plus ${localStorage.getItem(member.username)}`);
                     const btnMinus = document.getElementsByClassName(`minus ${localStorage.getItem(member.username)}`);
                     btnPlus[0].addEventListener('click', () => {
-                        const input = document.querySelector('.input-number-classes');
-                        if (!isNumeric(input.value)){
+                        const input =
+                            document.getElementsByClassName(`input-number-classes ${localStorage.getItem(member.username)}`);
+                        if (!isNumeric(input[0].value)){
                             alert('Invalid input. Please, enter number');
                         } else {
-                            changeNumberClasses("plus", member.username, input.value);
+                            changeNumberClasses("plus", member.username, input[0].value);
                         }
 
                     })
@@ -74,7 +75,7 @@ fetch(URL_BACKEND + HOME + "/" + groupId + MEMBERS, {
                         deleteUser(member.username);
                     })
                 } else {
-                    membersList.insertAdjacentHTML('beforeend', `
+                    membersList.insertAdjacentHTML('afterbegin', `
                         <li> 
                             <p><b>${member.username}</b></p>
                             <p>${paidText}</p>
